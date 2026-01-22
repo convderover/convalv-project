@@ -67,33 +67,15 @@ const ConvalvApp = () => {
   // Verificación del audio limpio
   useEffect(() => {
     if (cleanedAudioUrl) {
-        console.log('=== AUDIO LIMPIO RECIBIDO ===');
-        console.log('Longitud total:', cleanedAudioUrl.length);
-        console.log('Empieza con:', cleanedAudioUrl.substring(0, 50));
-        console.log('Es base64 válido:', cleanedAudioUrl.startsWith('data:audio/wav;base64,'));
-        
-        // Intentar crear un Blob como alternativa
-        try {
-        const base64Data = cleanedAudioUrl.split(',')[1];
-        const binaryData = atob(base64Data);
-        const arrayBuffer = new Uint8Array(binaryData.length);
-        for (let i = 0; i < binaryData.length; i++) {
-            arrayBuffer[i] = binaryData.charCodeAt(i);
-        }
-        const blob = new Blob([arrayBuffer], { type: 'audio/wav' });
-        const blobUrl = URL.createObjectURL(blob);
-        console.log('✅ Blob URL creada:', blobUrl);
-        
-        // Usar el blob URL en lugar de base64
+        console.log("✅ cleanedAudioUrl:", cleanedAudioUrl);
+
         if (cleanedAudioRef.current) {
-            cleanedAudioRef.current.src = blobUrl;
-            cleanedAudioRef.current.load();
-        }
-        } catch (error) {
-        console.error('❌ Error creando Blob:', error);
+        cleanedAudioRef.current.src = cleanedAudioUrl;
+        cleanedAudioRef.current.load();
         }
     }
   }, [cleanedAudioUrl]);
+
 
   // Timer de grabación
   useEffect(() => {
