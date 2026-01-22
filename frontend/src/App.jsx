@@ -32,29 +32,37 @@ const ConvalvApp = () => {
   const mediaRecorderRef = useRef(null);
   const recordingTimerRef = useRef(null);
 
-  // Función para llamar al backend de Python
   const callPythonAPI = async (endpoint, formData) => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 120000); // 120s
+
     try {
-      const response = await fetch(`${CONFIG.API_URL}${endpoint}`, {
-        method: 'POST',
+        console.log("➡️ POST:", `${CONFIG.API_URL}${endpoint}`);
+
+        const response = await fetch(`${CONFIG.API_URL}${endpoint}`, {
+        method: "POST",
         body: formData,
-        onUploadProgress: (progressEvent) => {
-          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          setUploadProgress(percentCompleted);
+        signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        console.log("✅ STATUS:", response.status);
+
+        if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`Error del servidor: ${response.status} | ${text}`);
         }
-      });
 
-      if (!response.ok) {
-        throw new Error(`Error del servidor: ${response.status}`);
-      }
-
-      return await response.json();
+        return await response.json();
     } catch (err) {
-      setError(err.message);
-      console.error('Error en la API:', err);
-      return null;
+        clearTimeout(timeoutId);
+        console.error("❌ Error en la API:", err);
+        setError(err.name === "AbortError" ? "⏳ Timeout: Render tardó demasiado" : err.message);
+        return null;
     }
   };
+
 
   // Simulación de carga de dependencias
   useEffect(() => {
