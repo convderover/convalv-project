@@ -1,0 +1,10 @@
+flask
+flask-cors
+librosa
+numpy
+scipy
+torch
+torchvision
+soundfile
+pyyaml
+pillow
