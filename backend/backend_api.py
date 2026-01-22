@@ -106,7 +106,8 @@ def predict_audio():
         sf.write(clean_audio_path, y_resampled.astype(np.float32), 44100, subtype='PCM_16')
 
         # URL directa al archivo
-        clean_audio_url = f"http://localhost:5000/temp/{clean_audio_filename}"
+        clean_audio_url = request.host_url.rstrip("/") + f"/temp/{clean_audio_filename}"
+
         print(f"✅ Audio limpio guardado: {clean_audio_path}")
         print(f"✅ URL: {clean_audio_url}")
         # NO BORRAR el archivo todavía, lo necesitamos disponible
