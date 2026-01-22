@@ -321,6 +321,11 @@ def fig_to_base64(fig):
     return f"data:image/png;base64,{img_base64}"
 
 
+@app.route("/", methods=["GET"])
+def home():
+    return "CONVALV backend OK", 200
+
+
 # ============================================================
 # ENDPOINT 2: ANÁLISIS CLÍNICO (clinical_analysis_pro_v2.py)
 # ============================================================
