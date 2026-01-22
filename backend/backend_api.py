@@ -40,6 +40,8 @@ app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max
 # ENDPOINT 1: PREDICCIÓN (predict_pro_system.py)
 # ============================================================
 @app.route('/api/predict', methods=['POST'])
+def predict_audio_alias():
+    return predict_audio()
 def predict_audio():
     """
     Recibe un archivo de audio y ejecuta el diagnóstico completo.
