@@ -3,7 +3,7 @@ import { Heart, Mic, Upload, Play, Pause, RefreshCw, X, ChevronRight, FileAudio,
 
 // CONFIGURACIÓN: Reemplaza estas URLs con las rutas de tus recursos
 const CONFIG = {
-  API_URL: 'http://https://convalv-backend.onrender.com/api',
+  API_URL: 'https://convalv-backend.onrender.com',
   LOGO_MAIN: '/assets/convalv_logo.png',
   LOGO_PERSONAL: '/assets/roberto_logo.png',
 };
