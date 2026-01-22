@@ -28,6 +28,11 @@ MODEL_PATH = Path(__file__).resolve().parent / "models" / "best_convalv_holistic
 app = Flask(__name__)
 CORS(app)  # Permitir peticiones desde React
 
+@app.route("/", methods=["GET"])
+def home():
+    return "CONVALV backend OK ✅", 200
+
+
 # Configuración
 UPLOAD_FOLDER = Path('./uploads')
 TEMP_FOLDER = Path('./temp')
