@@ -110,8 +110,7 @@ def predict_audio():
         sf.write(clean_audio_path, y_resampled.astype(np.float32), 44100, subtype='PCM_16')
 
         # URL directa al archivo
-        clean_audio_url = request.host_url.rstrip("/") + f"/temp/{clean_audio_filename}"
-
+        clean_audio_url = f"https://{request.host}/temp/{clean_audio_filename}"
         print(f"✅ Audio limpio guardado: {clean_audio_path}")
         print(f"✅ URL: {clean_audio_url}")
         # NO BORRAR el archivo todavía, lo necesitamos disponible
@@ -307,12 +306,12 @@ def generate_diagnostic_graphs(y_clean, env, pks, labels, bpm, rvv, sr):
     
     plt.tight_layout()
     graphs['rhythm_url'] = fig_to_base64(fig)
-    plt.close()
+    plt.close('all')
     
     # --- MONITOR IV: REPORTE (puedes añadir un resumen textual) ---
     # Este gráfico puede ser generado por clinical_analysis_pro_v2.py
     graphs['report_url'] = None  # Opcional
-    
+
     return graphs
 
 
