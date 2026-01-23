@@ -32,8 +32,6 @@ const ConvalvApp = () => {
   const mediaRecorderRef = useRef(null);
   const recordingTimerRef = useRef(null);
 
-  const CONFIG = { API_URL: "https://convalv-backend.onrender.com" };
-
 
   const callPythonAPI = async (endpoint, formData) => {
     const controller = new AbortController();
@@ -170,7 +168,8 @@ const ConvalvApp = () => {
     
     try {
       // Llamada al script predict_pro_system.py
-      const diagnosticResult = await callPythonAPI('/api/predict', formData);
+      const diagnosticResult = await callPythonAPI("/predict", formData);
+;
 
       
       if (!diagnosticResult) {
