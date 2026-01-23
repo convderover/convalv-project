@@ -101,35 +101,31 @@ def procesar_cirugia_pro(y, sr):
     if len(pks) > 0:
         labels.append("S2" if not labels or labels[-1] == "S1" else "S1")
 
-    
     # F. Cálculo de Métricas CORREGIDO (Basado en pares S1-S2)
-        # Agrupar picos en pares S1-S2 (un latido = S1 + S2)
-        latidos_s1 = []
-        i = 0
-        while i < len(pks) - 1:
-            t1 = pks[i] / sr
-            t2 = pks[i+1] / sr
-            dt = t2 - t1
-            
-            # Si el intervalo está entre 200-500ms, es un par S1-S2 válido
-            if 0.20 < dt < 0.50:
-                latidos_s1.append(pks[i])  # Guardar solo el S1 de cada latido
-                i += 2  # Saltar al siguiente par
-            else:
-                i += 1  # Pico ruidoso, buscar siguiente
-
-        # Calcular R-R entre S1 consecutivos (latido a latido)
-        if len(latidos_s1) > 1:
-            intervalos_rr = np.diff(latidos_s1) / sr
-            bpm = float(60 / np.mean(intervalos_rr))
-            rvv = float(np.std(intervalos_rr) * 1000)
-        else:
-            bpm = 75.0
-            rvv = 50.0
-
-        print(f"🫀 Latidos válidos detectados: {len(latidos_s1)} | BPM corregido: {bpm:.1f}")
+    latidos_s1 = []
+    i = 0
+    while i < len(pks) - 1:
+        t1 = pks[i] / sr
+        t2 = pks[i+1] / sr
+        dt = t2 - t1
         
-        return y_clean, env, pks, labels, bpm, rvv
+        if 0.20 < dt < 0.50:
+            latidos_s1.append(pks[i])
+            i += 2
+        else:
+            i += 1
+
+    if len(latidos_s1) > 1:
+        intervalos_rr = np.diff(latidos_s1) / sr
+        bpm = float(60 / np.mean(intervalos_rr))
+        rvv = float(np.std(intervalos_rr) * 1000)
+    else:
+        bpm = 75.0
+        rvv = 50.0
+
+    print(f"🫀 Latidos válidos detectados: {len(latidos_s1)} | BPM corregido: {bpm:.1f}")
+    
+    return y_clean, env, pks, labels, bpm, rvv
 
 # --- 4. FUNCIÓN PRINCIPAL DE DIAGNÓSTICO ---
 def ejecutar_diagnostico():
