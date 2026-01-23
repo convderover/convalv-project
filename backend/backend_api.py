@@ -28,6 +28,13 @@ MODEL_PATH = Path(__file__).resolve().parent / "models" / "best_convalv_holistic
 app = Flask(__name__)
 CORS(app)  # Permitir peticiones desde React
 
+# CARGA GLOBAL: Esto se hace una sola vez al encender el servidor
+print("🧠 Preparando IA...")
+device = torch.device("cpu")
+model = predictor.ConvalvHolisticNet().to(device)
+model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
+model.eval()
+
 @app.route("/", methods=["GET"])
 def home():
     return "CONVALV backend OK ✅", 200
@@ -107,7 +114,7 @@ def predict_audio():
         print(f"🔊 DEBUG Audio - Resampleado a 44100 Hz: {len(y_resampled)} muestras")
 
         # Guardar con sample rate estándar
-        sf.write(clean_audio_path, y_resampled.astype(np.float32), 44100, subtype='PCM_16')
+        sf.write(clean_audio_path, y_resampled.astype(np.float32), 22050, subtype='PCM_16')
 
         # URL directa al archivo
         clean_audio_url = f"https://{request.host}/temp/{clean_audio_filename}"
@@ -128,9 +135,9 @@ def predict_audio():
         print("✅ Espectrograma generado")
         
         # 5. Cargar modelo y predecir
-        model = predictor.ConvalvHolisticNet().to(predictor.DEVICE)
-        model.load_state_dict(torch.load(MODEL_PATH, map_location=predictor.DEVICE))        
-        model.eval()
+        #model = predictor.ConvalvHolisticNet().to(predictor.DEVICE)
+        #model.load_state_dict(torch.load(MODEL_PATH, map_location=predictor.DEVICE))        
+        #model.eval()
         print("✅ Modelo cargado")
         
         # Preparar tensores
