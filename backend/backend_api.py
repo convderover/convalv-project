@@ -32,7 +32,6 @@ CORS(app)  # Permitir peticiones desde React
 def home():
     return "CONVALV backend OK ✅", 200
 
-
 # Configuración
 UPLOAD_FOLDER = Path('./uploads')
 TEMP_FOLDER = Path('./temp')
@@ -325,10 +324,6 @@ def fig_to_base64(fig):
     img_base64 = base64.b64encode(buf.read()).decode('utf-8')
     return f"data:image/png;base64,{img_base64}"
 
-
-@app.route("/", methods=["GET"])
-def home():
-    return "CONVALV backend OK", 200
 
 
 # ============================================================
